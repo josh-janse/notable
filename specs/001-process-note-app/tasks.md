@@ -83,7 +83,7 @@
 
 ---
 
-## Phase 3: User Story 2 - Client Profile Management (Priority: P2) 🎯 MVP
+## Phase 3: User Story 2 - Client Profile Management (Priority: P2)
 
 **Goal**: Enable practitioners to create, view, search, and manage client profiles as foundational data for notes
 
@@ -93,19 +93,33 @@
 
 ### Implementation for User Story 2
 
-- [ ] T024 [P] [US2] Create client list Server Component in components/clients/client-list.tsx with table display and pagination
-- [ ] T025 [P] [US2] Create client card Server Component in components/clients/client-card.tsx for list item display
-- [ ] T026 [P] [US2] Create client form Client Component in components/clients/client-form.tsx with Zod validation and form state
-- [ ] T027 [P] [US2] Create global client search Client Component in components/clients/client-search.tsx with debounced search input
-- [ ] T028 [US2] Implement GET /api/clients route handler in app/api/clients/route.ts with search, filter, pagination support
-- [ ] T029 [US2] Implement POST /api/clients route handler in app/api/clients/route.ts with Zod validation
-- [ ] T030 [US2] Implement GET /api/clients/[clientId]/route.ts with client details, recent notes/assessments aggregation
-- [ ] T031 [US2] Implement PATCH /api/clients/[clientId]/route.ts for client updates
-- [ ] T032 [US2] Implement DELETE /api/clients/[clientId]/route.ts for soft delete (archived_at timestamp)
-- [ ] T033 [US2] Create client list page in app/(dashboard)/clients/page.tsx as Server Component with search integration
-- [ ] T034 [US2] Create client detail page in app/(dashboard)/clients/[clientId]/page.tsx with tabs: Overview, Notes, Assessments, Search
-- [ ] T035 [US2] Create client detail tabs Client Component in components/clients/client-detail-tabs.tsx for tab navigation
-- [ ] T036 [US2] Add database seed script in supabase/seed.sql with sample note templates (SOAP Note, Progress Note) per quickstart.md
+- [x] T024 [P] [US2] Create client list Server Component in components/clients/client-list.tsx with table display and pagination
+- [x] T025 [P] [US2] Create client card Server Component in components/clients/client-card.tsx for list item display
+- [x] T026 [P] [US2] Create client form Client Component in components/clients/client-form.tsx with Zod validation and form state
+- [x] T027 [P] [US2] Create global client search Client Component in components/clients/client-search.tsx with debounced search input
+- [x] T028 [US2] Implement GET /api/clients route handler in app/api/clients/route.ts with search, filter, pagination support
+- [x] T029 [US2] Implement POST /api/clients route handler in app/api/clients/route.ts with Zod validation
+- [x] T030 [US2] Implement GET /api/clients/[clientId]/route.ts with client details, recent notes/assessments aggregation
+- [x] T031 [US2] Implement PATCH /api/clients/[clientId]/route.ts for client updates
+- [x] T032 [US2] Implement DELETE /api/clients/[clientId]/route.ts for soft delete (archived_at timestamp)
+- [x] T033 [US2] Create client list page in app/(dashboard)/clients/page.tsx as Server Component with search integration
+- [x] T034 [US2] Create client detail page in app/(dashboard)/clients/[clientId]/page.tsx with tabs: Overview, Notes, Assessments, Search
+- [x] T035 [US2] Create client detail tabs Client Component in components/clients/client-detail-tabs.tsx for tab navigation
+- [x] T036 [US2] Add database seed script in supabase/seed.sql with sample note templates (SOAP Note, Progress Note) per quickstart.md
+
+**Additional Implementation Work**:
+- Created app/(dashboard)/clients/new/page.tsx for new client form
+- Created app/(dashboard)/clients/[clientId]/edit/page.tsx for client editing
+- Fixed seed.sql syntax errors (removed apostrophes, converted to lowercase SQL per style guide)
+- Created migration 20251125160800_create_profile_trigger.sql to auto-create profile records on user signup (resolves foreign key constraint error)
+- Created migration 20251125160900_add_note_template_fields.sql to add template_type, markdown_template, field_schema, category columns
+- Created migration 20251125161000_make_structure_nullable.sql to make structure column optional
+- Removed auth debug logging from lib/supabase/middleware.ts
+- Fixed TypeScript type compatibility issues in client-form.tsx with Zod v4 and react-hook-form
+- Fixed infinite loop in client-search.tsx: removed searchParams and router from useEffect dependency array to prevent continuous page refreshes
+
+**Known Issues for Future Investigation**:
+- Supabase warning: "Using the user object as returned from supabase.auth.getSession()... could be insecure" appears despite using getClaims() as per Supabase SSR docs. Middleware follows prescribed Next.js approach. Requires investigation to determine if warning is false positive or if additional security measures needed.
 
 **Checkpoint**: Client management fully functional - can create, view, search, update, archive clients independently
 
@@ -119,29 +133,39 @@
 
 ### Implementation for User Story 1
 
-- [ ] T037 [P] [US1] Create note editor Client Component in components/notes/note-editor.tsx using Novel or Tiptap with locked header extension from research.md
-- [ ] T038 [P] [US1] Create transcription panel Client Component in components/notes/transcription-panel.tsx with Deepgram SDK WebSocket integration
-- [ ] T039 [P] [US1] Create template renderer component in components/notes/template-renderer.tsx for markdown with locked headers
-- [ ] T040 [P] [US1] Create note list Server Component in components/notes/note-list.tsx with status badges and date sorting
-- [ ] T041 [P] [US1] Create note card Server Component in components/notes/note-card.tsx for list display
-- [ ] T042 [US1] Create useTranscription hook in hooks/use-transcription.ts implementing Deepgram createClient() pattern from research.md
-- [ ] T043 [US1] Create useNoteExtraction hook in hooks/use-note-extraction.ts using AI SDK useObject with Zod schema
-- [ ] T044 [US1] Implement extract-note-fields service in lib/ai/extract-note-fields.ts using streamObject with Zod schema per research.md
-- [ ] T045 [US1] Implement generate-summary service in lib/ai/generate-summary.ts for session summaries
-- [ ] T046 [US1] Create Tiptap editor configuration in lib/editor/tiptap-config.ts with custom locked header extension
-- [ ] T047 [US1] Create template schema utilities in lib/editor/template-schema.ts for note template structure validation
-- [ ] T048 [US1] Implement POST /api/notes/[noteId]/extract/route.ts for LLM field extraction using streamObject and toTextStreamResponse
-- [ ] T049 [US1] Implement GET /api/notes route handler in app/api/notes/route.ts with client_id filter, status filter, date range
-- [ ] T050 [US1] Implement POST /api/notes route handler in app/api/notes/route.ts for note creation with transcription
-- [ ] T051 [US1] Implement GET /api/notes/[noteId]/route.ts for note retrieval with template structure
-- [ ] T052 [US1] Implement PATCH /api/notes/[noteId]/route.ts for note updates with embedding generation using embed() from 'ai' per research.md
-- [ ] T053 [US1] Implement DELETE /api/notes/[noteId]/route.ts for soft delete
-- [ ] T054 [US1] Create note creation page in app/(dashboard)/notes/new/page.tsx with client selection, template selection, transcription panel
-- [ ] T055 [US1] Create note view page in app/(dashboard)/clients/[clientId]/notes/[noteId]/page.tsx showing approved note with template structure
-- [ ] T056 [US1] Create note edit page in app/(dashboard)/clients/[clientId]/notes/[noteId]/edit/page.tsx with editor and extraction workflow
-- [ ] T057 [US1] Add note conversations table storage for LLM chat history in note creation workflow
-- [ ] T058 [US1] Implement embedding generation on note save in PATCH /api/notes/[noteId]/route.ts using AI SDK embed() with openai.textEmbeddingModel()
-- [ ] T059 [US1] Update client detail page tabs to show notes list in Notes tab using note-list component
+- [x] T037 [P] [US1] Create note editor Client Component in components/notes/note-editor.tsx using Novel or Tiptap with locked header extension from research.md
+- [x] T038 [P] [US1] Create transcription panel Client Component in components/notes/transcription-panel.tsx with Deepgram SDK WebSocket integration
+- [x] T039 [P] [US1] Create template renderer component in components/notes/template-renderer.tsx for markdown with locked headers
+- [x] T040 [P] [US1] Create note list Server Component in components/notes/note-list.tsx with status badges and date sorting
+- [x] T041 [P] [US1] Create note card Server Component in components/notes/note-card.tsx for list display
+- [x] T042 [US1] Create useTranscription hook in hooks/use-transcription.ts implementing Deepgram createClient() pattern from research.md
+- [x] T043 [US1] Create useNoteExtraction hook in hooks/use-note-extraction.ts using AI SDK useObject with Zod schema
+- [x] T044 [US1] Implement extract-note-fields service in lib/ai/extract-note-fields.ts using streamObject with Zod schema per research.md
+- [x] T045 [US1] Implement generate-summary service in lib/ai/generate-summary.ts for session summaries
+- [x] T046 [US1] Create Tiptap editor configuration in lib/editor/tiptap-config.ts with custom locked header extension
+- [x] T047 [US1] Create template schema utilities in lib/editor/template-schema.ts for note template structure validation
+- [x] T048 [US1] Implement POST /api/notes/[noteId]/extract/route.ts for LLM field extraction using streamObject and toTextStreamResponse
+- [x] T049 [US1] Implement GET /api/notes route handler in app/api/notes/route.ts with client_id filter, status filter, date range
+- [x] T050 [US1] Implement POST /api/notes route handler in app/api/notes/route.ts for note creation with transcription
+- [x] T051 [US1] Implement GET /api/notes/[noteId]/route.ts for note retrieval with template structure
+- [x] T052 [US1] Implement PATCH /api/notes/[noteId]/route.ts for note updates with embedding generation using embed() from 'ai' per research.md
+- [x] T053 [US1] Implement DELETE /api/notes/[noteId]/route.ts for soft delete
+- [x] T054 [US1] Create note creation page in app/(dashboard)/notes/new/page.tsx with client selection, template selection, transcription panel
+- [x] T055 [US1] Create note view page in app/(dashboard)/clients/[clientId]/notes/[noteId]/page.tsx showing approved note with template structure
+- [x] T056 [US1] Create note edit page in app/(dashboard)/clients/[clientId]/notes/[noteId]/edit/page.tsx with editor and extraction workflow
+- [x] T057 [US1] Add note conversations table storage for LLM chat history in note creation workflow
+- [x] T058 [US1] Implement embedding generation on note save in PATCH /api/notes/[noteId]/route.ts using AI SDK embed() with openai.textEmbeddingModel()
+- [x] T059 [US1] Update client detail page tabs to show notes list in Notes tab using note-list component
+
+**UI/UX Improvements**:
+- Redesigned note-taking interface with clean two-pane layout: left pane for raw transcription input, right pane for structured note output
+- Reorganized button placement: left pane has "Start Transcribing" + "Generate Note" side by side at bottom, right pane has "Save Note" at bottom
+- Fixed scrolling behavior: both panes scroll content internally with buttons always visible, page height constrained to viewport using `max-h-[calc(100vh-6rem)]`
+- Implemented document-like editing experience for right pane: section headers locked, body text directly editable with contentEditable, natural height based on content
+- Fixed contentEditable cursor jumping issue using focus/blur tracking to prevent re-renders during editing
+- Enhanced template system: added prompting questions display, made extraction dynamic to work with any template structure (not just SOAP notes)
+- Template selector allows changes before content is entered (disabled only when transcription or generated content exists)
+- Client pre-selection via URL parameter (`?clientId=xxx`) when navigating from client profile
 
 **Checkpoint**: Note transcription and template population fully functional - complete end-to-end note creation workflow working independently
 

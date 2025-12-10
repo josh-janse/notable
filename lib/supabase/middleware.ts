@@ -43,15 +43,6 @@ export async function updateSession(request: NextRequest) {
   const { data } = await supabase.auth.getClaims();
   const user = data?.claims;
 
-  // Debug logging
-  if (process.env.NODE_ENV === "development") {
-    console.log("Middleware check:", {
-      path: request.nextUrl.pathname,
-      hasUser: !!user,
-      cookies: request.cookies.getAll().map((c) => c.name),
-    });
-  }
-
   if (
     !(
       user ||
@@ -63,7 +54,6 @@ export async function updateSession(request: NextRequest) {
     // no user, potentially respond by redirecting the user to the login page
     const redirectUrl = request.nextUrl.clone();
     redirectUrl.pathname = "/login";
-    console.log("Redirecting to login - no user found");
     return NextResponse.redirect(redirectUrl);
   }
 

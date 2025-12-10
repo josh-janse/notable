@@ -56,9 +56,9 @@ export const gateway = createGateway({
 
 /**
  * Default model for note field extraction
- * Using OpenAI GPT-4 Turbo for structured extraction
+ * Using OpenAI GPT-4o for structured extraction (supports json_schema)
  */
-export const DEFAULT_EXTRACTION_MODEL = "openai/gpt-4-turbo";
+export const DEFAULT_EXTRACTION_MODEL = "openai/gpt-4o";
 
 /**
  * Default model for embeddings
@@ -68,6 +68,6 @@ export const DEFAULT_EMBEDDING_MODEL = "openai/text-embedding-3-small";
 
 /**
  * Default model for summaries and general text generation
- * Using OpenAI GPT-4 Turbo for high-quality summaries
+ * Using OpenAI GPT-4o for high-quality summaries
  */
-export const DEFAULT_GENERATION_MODEL = "openai/gpt-4-turbo";
+export const DEFAULT_GENERATION_MODEL = "openai/gpt-4o";
